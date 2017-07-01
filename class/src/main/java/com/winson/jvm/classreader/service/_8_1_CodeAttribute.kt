@@ -47,21 +47,13 @@ fun readCodeAttribte(input: DataInputStream) {
     val attrLen = input.readInt()
     val maxStack = input.readUnsignedShort()
     val maxLocal = input.readUnsignedShort()
-    val codeLen = input.readInt()
     println("\t<Method Code level> maxStack: $maxStack, maxLocal: $maxLocal")
-    var offset = 0
-    while (offset++ < codeLen) {
-        val opCode = map[input.readUnsignedByte()]
-        print("\t${offset-1} ${opCode!!.name}")
-        when (opCode.operand) {
-            2 -> println(" ${pool(input.readUnsignedShort())}")
-            1 -> println(" ${pool(input.readUnsignedByte())}")
-            0 -> println()
-            else -> throw Exception("Not Implemented yet")
-        }
-        offset += opCode!!.operand
-    }
+    readNparseCodeCommands(input)
+    readCodeException(input)
+    readAttributes(input)
+}
 
+private fun readCodeException(input: DataInputStream) {
     val exceptLen = input.readUnsignedShort()
     for (i in 1..exceptLen) {
         val startPc = input.readUnsignedShort()
@@ -70,5 +62,20 @@ fun readCodeAttribte(input: DataInputStream) {
         val catchType = input.readUnsignedShort()
         println("Exception #$i: from $startPc to $endPc hander $handlerPc under type ${if (catchType > 0) pool(catchType) else ""}")
     }
-    readAttributes(input)
+}
+
+private fun readNparseCodeCommands(input: DataInputStream) {
+    val codeLen = input.readInt()
+    var offset = 0
+    while (offset++ < codeLen) {
+        val opCode = map[input.readUnsignedByte()]
+        print("\t${offset - 1} ${opCode!!.name}")
+        when (opCode.operand) {
+            2 -> println(" ${pool(input.readUnsignedShort())}")
+            1 -> println(" ${pool(input.readUnsignedByte())}")
+            0 -> println()
+            else -> throw Exception("Not Implemented yet")
+        }
+        offset += opCode!!.operand
+    }
 }
