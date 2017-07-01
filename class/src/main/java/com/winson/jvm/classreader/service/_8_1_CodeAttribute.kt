@@ -9,21 +9,21 @@ import java.io.DataInputStream
 private val map = hashMapOf(0 to OpCode(0, "nop", 0, "perform no operation"),
         0xb9 to OpCode(0xb9, "invokeinterface", 4, "4: indexbyte1, indexbyte2, count, 0"),
         0xbb to OpCode(0xbb, "new", 2, "create new object of type"),
-        0x59 to OpCode(value = 0x59, name = "dup", operand = 0, desc = "duplicate the value on top of the stack"),
-        0xb7 to OpCode(value = 0xB7, name = "invokespecial", operand = 2, desc = "invoke instance method on object"),
-        0x4e to OpCode(value = 0x4e, name = "astore_3", operand = 0, desc = "store a reference into local variable 3"),
-        0x4c to OpCode(value = 0x4c, name = "astore_1", operand = 0, desc = "store a reference into local variable 1"),
-        0x4d to OpCode(value = 0x4d, name = "astore_2", operand = 0, desc = "store a reference into local variable 2"),
-        0x2a to OpCode(value = 0x2a, name = "aload_0", operand = 0, desc = "load a reference onto the stack from local variable 0"),
-        0xb1 to OpCode(value = 0xb1, name = "return", operand = 0, desc = "return void from method"),
-        0x2c to OpCode(value = 0x2c, name = "aload_2", operand = 0, desc = "load a reference onto the stack from local variable 2"),
-        0x12 to OpCode(value = 0x12, name = "ldc", operand = 1, desc = "push a constant #index from a constant pool"),
-        0xb6 to OpCode(value = 0xb6, name = "invokevirtual", operand = 2, desc = "invoke virtual method on object objectref and puts the result on the stack"),
-        0x2d to OpCode(value = 0x2d, name = "aload_3", operand = 0, desc = "load a reference onto the stack from local variable 3"),
-        0x2b to OpCode(value = 0x2d, name = "aload_1", operand = 0, desc = "load a reference onto the stack from local variable 1")
+        0x59 to OpCode(value = 0x59, mnemonic = "dup", operand = 0, desc = "duplicate the value on top of the stack"),
+        0xb7 to OpCode(value = 0xB7, mnemonic = "invokespecial", operand = 2, desc = "invoke instance method on object"),
+        0x4e to OpCode(value = 0x4e, mnemonic = "astore_3", operand = 0, desc = "store a reference into local variable 3"),
+        0x4c to OpCode(value = 0x4c, mnemonic = "astore_1", operand = 0, desc = "store a reference into local variable 1"),
+        0x4d to OpCode(value = 0x4d, mnemonic = "astore_2", operand = 0, desc = "store a reference into local variable 2"),
+        0x2a to OpCode(value = 0x2a, mnemonic = "aload_0", operand = 0, desc = "load a reference onto the stack from local variable 0"),
+        0xb1 to OpCode(value = 0xb1, mnemonic = "return", operand = 0, desc = "return void from method"),
+        0x2c to OpCode(value = 0x2c, mnemonic = "aload_2", operand = 0, desc = "load a reference onto the stack from local variable 2"),
+        0x12 to OpCode(value = 0x12, mnemonic = "ldc", operand = 1, desc = "push a constant #index from a constant pool"),
+        0xb6 to OpCode(value = 0xb6, mnemonic = "invokevirtual", operand = 2, desc = "invoke virtual method on object objectref and puts the result on the stack"),
+        0x2d to OpCode(value = 0x2d, mnemonic = "aload_3", operand = 0, desc = "load a reference onto the stack from local variable 3"),
+        0x2b to OpCode(value = 0x2d, mnemonic = "aload_1", operand = 0, desc = "load a reference onto the stack from local variable 1")
 )
 
-data class OpCode(val value: Int, val name: String, val operand: Int, val desc: String) {}
+data class OpCode(val value: Int, val mnemonic: String, val operand: Int, val desc: String) {}
 
 /*
 Code_attribute {
@@ -69,7 +69,7 @@ private fun readNparseCodeCommands(input: DataInputStream) {
     var offset = 0
     while (offset++ < codeLen) {
         val opCode = map[input.readUnsignedByte()]
-        print("\t${offset - 1} ${opCode!!.name}")
+        print("\t${offset - 1} ${opCode!!.mnemonic}")
         when (opCode.operand) {
             2 -> println(" ${pool(input.readUnsignedShort())}")
             1 -> println(" ${pool(input.readUnsignedByte())}")

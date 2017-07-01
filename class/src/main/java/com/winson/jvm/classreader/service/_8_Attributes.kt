@@ -92,7 +92,7 @@ private fun readLocalVariableTable(input: DataInputStream) {
         val desc = pool(input.readUnsignedShort())
         val index = input.readUnsignedShort()
 
-        println("<Additional code info> start pc: $startPc, length: $length, name: $name, desc: $desc, index: $index")
+        println("<Additional code info> start pc: $startPc, length: $length, mnemonic: $name, desc: $desc, index: $index")
     }
 }
 
@@ -146,6 +146,6 @@ private fun readInnerClassAttr(input: DataInputStream) {
         val outerClass = pool(input.readUnsignedShort())
         val innerName = pool(input.readUnsignedShort())
         val innerClassAccess = input.readUnsignedShort()
-        println("inner class: $innerClass, outer class: $outerClass, inner name: $innerName, inner access: $innerClassAccess")
+        println("inner class: $innerClass, outer class: $outerClass, inner mnemonic: $innerName, inner access: $innerClassAccess")
     }
 }
